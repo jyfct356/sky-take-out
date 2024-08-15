@@ -1,19 +1,23 @@
 package com.sky.controller.admin;
 
+import com.github.pagehelper.Page;
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.dto.EmployeeDTO;
+import com.sky.dto.EmployeeEditPasswordDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
+
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.Get;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,5 +74,77 @@ public class EmployeeController {
     public Result<String> logout() {
         return Result.success();
     }
+
+    /**
+     * 新增员工
+     * @param employeeDTO
+     * @return
+     */
+    @PostMapping("")
+    public Result<String> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("新增员工中...");
+        employeeService.addEmployee(employeeDTO);
+        return Result.success();
+    }
+
+    /**
+     * 分页查询员工
+     * @param employeePageQueryDTO
+     * @return
+     */
+    @GetMapping("/page")
+    public Result getEmployeePage(EmployeePageQueryDTO employeePageQueryDTO) {
+        log.info("分页查询员工...");
+        return Result.success(employeeService.getEmployeePage(employeePageQueryDTO));
+    }
+
+    /**
+     * 启用禁用员工账号
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    public Result setEmployeeStatus(@PathVariable Integer status, Long id) {
+        log.info("员工账号启用禁用开关");
+        employeeService.setEmployeeStatus(status, id);
+        return Result.success();
+    }
+
+    /**
+     * 编辑员工
+     * @param employeeDTO
+     * @return
+     */
+    @PutMapping("")
+    public Result updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("编辑员工");
+        employeeService.updateEmployee(employeeDTO);
+        return Result.success();
+    }
+
+    /**
+     * 通过id查询员工
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public Result getEmployeeById(@PathVariable Long id) {
+        log.info("通过id查询员工");
+        return Result.success(employeeService.getEmployeeById(id));
+    }
+
+    /**
+     * 修改密码
+     * @param employeeEditPasswordDTO
+     * @return
+     */
+    @PutMapping("/editPassword")
+    public Result editPassword(@RequestBody EmployeeEditPasswordDTO employeeEditPasswordDTO) {
+        log.info("修改密码");
+        employeeService.editPassword(employeeEditPasswordDTO);
+        return Result.success();
+    }
+
 
 }
