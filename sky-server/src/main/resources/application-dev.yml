@@ -1,3 +1,4 @@
+#application-dev.yml
 sky:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -6,3 +7,12 @@ sky:
     database: sky_take_out
     username: root
     password: jtfshine0116.
+  alioss:
+    access-key-id: LTAI5tNKRmR7eB7QjErR5aSf
+    access-key-secret: 0UGghZENykUKn6ab7H43JQwgde0CAc
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    bucket-name: jtf-sky-take-out
+  redis:
+    port: 6379
+    host: localhost
+    database: 1
