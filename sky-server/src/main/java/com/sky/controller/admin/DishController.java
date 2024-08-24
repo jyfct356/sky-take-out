@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.sky.constant.RedisConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.result.Result;
@@ -7,15 +8,21 @@ import com.sky.service.DishService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+import java.util.Set;
+
+@RestController("adminDishController")
 @RequestMapping("/admin/dish")
 @Api(tags = "菜品接口")
 @Slf4j
 public class DishController {
     @Autowired
     private DishService dishService;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 添加菜品
@@ -26,6 +33,9 @@ public class DishController {
     public Result addDish(@RequestBody DishDTO dishDTO) {
         log.info("添加菜品...");
         dishService.addDishWithFlavor(dishDTO);
+
+        cleanCache(RedisConstant.REDIS_CATEGORY_PREFIX + dishDTO.getCategoryId());
+
         return Result.success();
     }
 
@@ -50,6 +60,9 @@ public class DishController {
     public Result setDishStatus(@PathVariable("status") Integer status, String id) {
         log.info("起售、停售菜品...");
         dishService.setDishStatus(status, id);
+
+        cleanCache(RedisConstant.REDIS_CATEGORY_PREFIX + "*");
+
         return Result.success();
     }
 
@@ -84,6 +97,9 @@ public class DishController {
     public Result deleteDishByIds(String ids) {
         log.info("根据id批量删除菜品...");
         dishService.deleteDishByIds(ids);
+
+        cleanCache(RedisConstant.REDIS_CATEGORY_PREFIX + "*");
+
         return Result.success();
     }
 
@@ -96,6 +112,14 @@ public class DishController {
     public Result updateDish(@RequestBody DishDTO dishDTO) {
         log.info("修改菜品...");
         dishService.updateDish(dishDTO);
+
+        cleanCache(RedisConstant.REDIS_CATEGORY_PREFIX + dishDTO.getCategoryId());
+
         return Result.success();
+    }
+
+    private void cleanCache(String pattern) {
+        Set keys = redisTemplate.keys(pattern);
+        redisTemplate.delete(keys);
     }
 }

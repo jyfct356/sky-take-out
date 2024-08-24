@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * 员工管理
  */
-@RestController
+@RestController("adminCategoryController")
 @RequestMapping("/admin/category")
 @Slf4j
 @Api(tags = "分类接口")
