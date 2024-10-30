@@ -8,10 +8,10 @@ sky:
     username: root
     password: jtfshine0116.
   alioss:
-    access-key-id: LTAI5tNKRmR7eB7QjErR5aSf
-    access-key-secret: 0UGghZENykUKn6ab7H43JQwgde0CAc
-    endpoint: oss-cn-hangzhou.aliyuncs.com
-    bucket-name: jtf-sky-take-out
+    access-key-id: 
+    access-key-secret: 
+    endpoint: 
+    bucket-name: 
   redis:
     port: 6379
     host: localhost
