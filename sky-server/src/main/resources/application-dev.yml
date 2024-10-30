@@ -17,5 +17,5 @@ sky:
     host: localhost
     database: 1
   wechat:
-    appid: wx33ac2cd27d4a887d
-    secret: 47d984bb16ba5050ec93414d545b25bf
+    appid: 
+    secret: 
