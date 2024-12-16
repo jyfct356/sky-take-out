@@ -6,7 +6,7 @@ sky:
     port: 3306
     database: sky_take_out
     username: root
-    password: jtfshine0116.
+    password: 
   alioss:
     access-key-id: 
     access-key-secret: 
